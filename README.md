@@ -7,10 +7,10 @@ Single file library for Mojang's Yggdrasil API written in Golang without extra d
 # Recommended authentication procedure
 **Note: This procedure is based on the official Minecraft launcher's authentication logic.**
 
-When authenticating with Yggdrasil, you should use ``*yggdrasil.Client.Authenticate()`` only if you do not already have an access/client token pair stored somewhere as Yggdrasil's ``/authenticate`` endpoint is severely rate-limited. If you have an access/client token pair, you should use ``*yggdrasil.Client.Validate()`` on a pre-initialized ``*yggdrasil.Client`` variable to make sure it is valid. If it is not, you should then use ``*yggdrasil.Client.Refresh()`` to get a new access token and have it automatically stored in the ``*yggdrasil.Client`` variable. Should this fail, however, then it is safe to use ``*yggdrasil.Client.Authenticate()`` again and store the returned access/client token pair for future use.
+When authenticating with Yggdrasil, you should use ``*yggdrasil.Client.Authenticate()`` only if you do not already have an access/client token pair stored somewhere, as Yggdrasil's ``/authenticate`` endpoint is severely rate-limited. If you have an access/client token pair, you should use ``*yggdrasil.Client.Validate()`` on a pre-initialized ``*yggdrasil.Client`` variable to make sure it is still valid. If it is not, you should then use ``*yggdrasil.Client.Refresh()`` to get a new access token and have it automatically stored in the ``*yggdrasil.Client`` variable. Should this fail, however, then it is safe to use ``*yggdrasil.Client.Authenticate()`` again and store the returned access/client token pair for future use.
 
 # Additional notes
-When an authentication is successful, your ``*yggdrasil.Client`` variable will contain the client's access/client token pair, the current selected profile (changing this is not yet implemented into Yggdrasil), and the current user.
+When an authentication is successful, your ``*yggdrasil.Client`` variable will contain the client's access/client token pair, the current selected profile (changing this is not yet implemented in Yggdrasil), and the current user.
 
 When using any available go-yggdrasil functions, any internal errors will be returned as ``*yggdrasil.Error.FuncError`` rather than be classically available as an ``error`` type. Any errors returned from Yggdrasil itself will be returned as ``*yggdrasil.Error``.
 
