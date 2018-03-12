@@ -299,17 +299,16 @@ func (client *Client) Signout(username, password string) (bool, *Error) {
 
 	if len(body) == 0 {
 		return true, nil
-	} else {
-		var errorResponse *Error
-		err = json.Unmarshal(body, &errorResponse)
-
-		if err != nil {
-			return false, &Error{FuncError: err}
-		}
-
-		errorResponse.StatusCode = response.StatusCode
-		return false, errorResponse
 	}
+	
+	var errorResponse *Error
+	err = json.Unmarshal(body, &errorResponse)
+	if err != nil {
+		return false, &Error{FuncError: err}
+	}
+
+	errorResponse.StatusCode = response.StatusCode
+	return false, errorResponse
 }
 
 // Invalidate attempts to invalidate an existing access/client token pair.
@@ -344,15 +343,14 @@ func (client *Client) Invalidate() *Error {
 
 	if len(body) == 0 {
 		return nil
-	} else {
-		var errorResponse *Error
-		err = json.Unmarshal(body, &errorResponse)
-
-		if err != nil {
-			return &Error{FuncError: err}
-		}
-
-		errorResponse.StatusCode = response.StatusCode
-		return errorResponse
 	}
+
+	var errorResponse *Error
+	err = json.Unmarshal(body, &errorResponse)
+	if err != nil {
+		return &Error{FuncError: err}
+	}
+
+	errorResponse.StatusCode = response.StatusCode
+	return errorResponse
 }
