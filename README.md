@@ -45,7 +45,7 @@ func main() {
 ```
 > go run main.go
 Access Token: 32 char hexadecimal access token
-Client Token: specified client toen
+Client Token: specified client token
 ```
 
 ## License
