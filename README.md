@@ -1,4 +1,8 @@
 # go-yggdrasil
+
+[![GoDoc](https://godoc.org/github.com/JoshuaDoes/go-yggdrasil?status.svg)](https://godoc.org/github.com/JoshuaDoes/go-yggdrasil)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JoshuaDoes/go-yggdrasil)](https://goreportcard.com/report/github.com/JoshuaDoes/go-yggdrasil)
+
 Single file library for Mojang's Yggdrasil API written in Golang without extra dependencies
 
 # Installing
