@@ -300,7 +300,7 @@ func (client *Client) Signout(username, password string) (bool, *Error) {
 	if len(body) == 0 {
 		return true, nil
 	}
-	
+
 	var errorResponse *Error
 	err = json.Unmarshal(body, &errorResponse)
 	if err != nil {
