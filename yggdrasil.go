@@ -301,5 +301,6 @@ func postJSONRequest(endpoint string, v interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	request.Header.Set("User-Agent", "go-yggdrasil/1.0")
 	return http.DefaultClient.Do(request)
 }
