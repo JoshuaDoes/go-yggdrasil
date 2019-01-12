@@ -115,20 +115,7 @@ func (client *Client) Authenticate(username, password, gameName string, gameVers
 		ClientToken: client.ClientToken,
 		RequestUser: true}
 
-	requestJSON, err := json.Marshal(authRequest)
-	if err != nil {
-		return nil, &Error{FuncError: err}
-	}
-
-	requestJSONBuffer := bytes.NewBuffer([]byte(requestJSON))
-
-	request, err := http.NewRequest("POST", "https://authserver.mojang.com/authenticate", requestJSONBuffer)
-	if err != nil {
-		return nil, &Error{FuncError: err}
-	}
-
-	httpClient := &http.Client{}
-	response, err := httpClient.Do(request)
+	response, err := postJSONRequest("/authenticate", authRequest)
 	if err != nil {
 		return nil, &Error{FuncError: err}
 	}
@@ -171,20 +158,7 @@ func (client *Client) Refresh() (*RefreshResponse, *Error) {
 		ClientToken: client.ClientToken,
 		RequestUser: true}
 
-	requestJSON, err := json.Marshal(refreshRequest)
-	if err != nil {
-		return nil, &Error{FuncError: err}
-	}
-
-	requestJSONBuffer := bytes.NewBuffer([]byte(requestJSON))
-
-	request, err := http.NewRequest("POST", "https://authserver.mojang.com/refresh", requestJSONBuffer)
-	if err != nil {
-		return nil, &Error{FuncError: err}
-	}
-
-	httpClient := &http.Client{}
-	response, err := httpClient.Do(request)
+	response, err := postJSONRequest("/refresh", refreshRequest)
 	if err != nil {
 		return nil, &Error{FuncError: err}
 	}
@@ -226,20 +200,7 @@ func (client *Client) Validate() (bool, *Error) {
 		AccessToken: client.AccessToken,
 		ClientToken: client.ClientToken}
 
-	requestJSON, err := json.Marshal(validateRequest)
-	if err != nil {
-		return false, &Error{FuncError: err}
-	}
-
-	requestJSONBuffer := bytes.NewBuffer([]byte(requestJSON))
-
-	request, err := http.NewRequest("POST", "https://authserver.mojang.com/validate", requestJSONBuffer)
-	if err != nil {
-		return false, &Error{FuncError: err}
-	}
-
-	httpClient := &http.Client{}
-	response, err := httpClient.Do(request)
+	response, err := postJSONRequest("/validate", validateRequest)
 	if err != nil {
 		return false, &Error{FuncError: err}
 	}
@@ -273,20 +234,7 @@ func (client *Client) Signout(username, password string) (bool, *Error) {
 		Username: username,
 		Password: password}
 
-	requestJSON, err := json.Marshal(signoutRequest)
-	if err != nil {
-		return false, &Error{FuncError: err}
-	}
-
-	requestJSONBuffer := bytes.NewBuffer([]byte(requestJSON))
-
-	request, err := http.NewRequest("POST", "https://authserver.mojang.com/signout", requestJSONBuffer)
-	if err != nil {
-		return false, &Error{FuncError: err}
-	}
-
-	httpClient := &http.Client{}
-	response, err := httpClient.Do(request)
+	response, err := postJSONRequest("/signout", signoutRequest)
 	if err != nil {
 		return false, &Error{FuncError: err}
 	}
@@ -317,20 +265,7 @@ func (client *Client) Invalidate() *Error {
 		AccessToken: client.AccessToken,
 		ClientToken: client.ClientToken}
 
-	requestJSON, err := json.Marshal(invalidateRequest)
-	if err != nil {
-		return &Error{FuncError: err}
-	}
-
-	requestJSONBuffer := bytes.NewBuffer([]byte(requestJSON))
-
-	request, err := http.NewRequest("POST", "https://authserver.mojang.com/invalidate", requestJSONBuffer)
-	if err != nil {
-		return &Error{FuncError: err}
-	}
-
-	httpClient := &http.Client{}
-	response, err := httpClient.Do(request)
+	response, err := postJSONRequest("/invalidate", invalidateRequest)
 	if err != nil {
 		return &Error{FuncError: err}
 	}
@@ -353,4 +288,18 @@ func (client *Client) Invalidate() *Error {
 
 	errorResponse.StatusCode = response.StatusCode
 	return errorResponse
+}
+
+const authServer = "https://authserver.mojang.com"
+
+func postJSONRequest(endpoint string, v interface{}) (*http.Response, error) {
+	body, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	request, err := http.NewRequest("POST", authServer+endpoint, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+	return http.DefaultClient.Do(request)
 }
