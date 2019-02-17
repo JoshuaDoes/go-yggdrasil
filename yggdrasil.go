@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+const authServer = "https://authserver.mojang.com"
+
 // Client holds an access token and a client token.
 // After a successful authentication, it will also hold the currently selected profile and the current user.
 type Client struct {
@@ -289,8 +291,6 @@ func (client *Client) Invalidate() *Error {
 	errorResponse.StatusCode = response.StatusCode
 	return errorResponse
 }
-
-const authServer = "https://authserver.mojang.com"
 
 func postJSONRequest(endpoint string, v interface{}) (*http.Response, error) {
 	body, err := json.Marshal(v)
